@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
+import model.exceptions.DomainException;
+
 public class Reserva {
 
 	private Integer numeroQuarto;
@@ -14,7 +16,15 @@ public class Reserva {
 
 	public Reserva() {
 	}
-	public Reserva(Integer numeroQuarto, LocalDate checkIn, LocalDate checkOut) {
+	public Reserva(Integer numeroQuarto, LocalDate checkIn, LocalDate checkOut) throws DomainException {
+		if(!checkOut.isAfter(checkIn)){
+			throw new DomainException( "Erro na reserva: Data do check-out tem que ser"
+					+ " posterior à data do check-in");
+		}
+		LocalDate hoje = LocalDate.now();
+		if(checkIn.isBefore(hoje) || checkOut.isBefore(hoje)) {
+			throw new DomainException("Erro na reserva: Datas precisam ser datas futuras");
+		}
 		this.numeroQuarto = numeroQuarto;
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
@@ -35,20 +45,25 @@ public class Reserva {
 		long diferencaEmDias = ChronoUnit.DAYS.between(checkIn, checkOut);
 		return diferencaEmDias;
 	}
-	public String AtualizarDatas(LocalDate checkIn, LocalDate checkOut) {
+	public void AtualizarDatas(LocalDate checkIn, LocalDate checkOut) throws DomainException {
 		
 		LocalDate hoje = LocalDate.now();
 		if(checkIn.isBefore(hoje) || checkOut.isBefore(hoje)) {
-			return "Erro na reserva: Datas precisam ser datas futuras";
+			//throw new IllegalArgumentException("Erro na reserva: Datas precisam ser datas futuras") ;
+			// alterando para uma exceção personalizada
+			throw new DomainException("Erro na reserva: Datas precisam ser datas futuras");
 		}
 		if(!checkOut.isAfter(checkIn)){
-			return "Erro na reserva: Data do check-out tem que ser"
-					+ " posterior à data do check-in";
+			//throw new IllegalArgumentException( "Erro na reserva: Data do check-out tem que ser"
+			//		+ " posterior à data do check-in");
+			// alterando para uma exceção personalizada
+			throw new DomainException( "Erro na reserva: Data do check-out tem que ser"
+					+ " posterior à data do check-in");
 		}
 		
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
-		return null;
+		
 	}
 	@Override
 	public String toString() {
