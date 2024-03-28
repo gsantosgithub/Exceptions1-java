@@ -35,9 +35,20 @@ public class Reserva {
 		long diferencaEmDias = ChronoUnit.DAYS.between(checkIn, checkOut);
 		return diferencaEmDias;
 	}
-	public void AtualizarDatas(LocalDate checkIn, LocalDate checkOut) {
+	public String AtualizarDatas(LocalDate checkIn, LocalDate checkOut) {
+		
+		LocalDate hoje = LocalDate.now();
+		if(checkIn.isBefore(hoje) || checkOut.isBefore(hoje)) {
+			return "Erro na reserva: Datas precisam ser datas futuras";
+		}
+		if(!checkOut.isAfter(checkIn)){
+			return "Erro na reserva: Data do check-out tem que ser"
+					+ " posterior à data do check-in";
+		}
+		
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
+		return null;
 	}
 	@Override
 	public String toString() {

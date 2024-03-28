@@ -1,13 +1,18 @@
 package aplicacao;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class DiferencaEntreDatas {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 				
 		Scanner sc = new Scanner(System.in);
 		
@@ -34,7 +39,24 @@ public class DiferencaEntreDatas {
 				
 		sc.close();
 
+		//**********************************
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date d03 = sdf.parse("03/08/1962");
+		Date d04 = sdf.parse("25/03/2024");
+		
+		long diff = d04.getTime() - d03.getTime();
+	    long dias = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+	    System.out.println("Número de dias: " + dias);
+	    
+	  //**********************************
+	    
+	    Date d = new Date();
 
+	    Calendar cal = Calendar.getInstance();
+	    cal.setTime(d);
+	    d = cal.getTime();
+	    System.out.println(sdf.format(d));
 	}
 
 }

@@ -35,26 +35,16 @@ public class ReservaPrograma {
 			checkIn = LocalDate.parse(sc.next(), dtf);
 			System.out.print("Data check-out: ");
 			checkOut = LocalDate.parse(sc.next(), dtf);
-			reserva.AtualizarDatas(checkIn, checkOut);
 			
-			LocalDate hoje = LocalDate.now();
-			if(checkIn.isBefore(hoje) || checkOut.isBefore(hoje)) {
-				System.out.println("Erro na reserva: Datas precisam ser datas futuras");
-			}else if(!checkOut.isAfter(checkIn)){
-				System.out.println("Erro na reserva: Data do check-out tem que ser"
-						+ " posterior à data do check-in");
+			String erro = reserva.AtualizarDatas(checkIn, checkOut);
+			
+			if (erro != null) {
+				System.out.println("Erro na reserva: " + erro);
 			}else {
-				reserva = new Reserva(numero, checkIn, checkOut);
+				//reserva = new Reserva(numero, checkIn, checkOut);
 				System.out.println("Reserva: " + reserva);
 			}
-			
 		}
-		
-		
-		
-		
 		sc.close();
-
 	}
-
 }
